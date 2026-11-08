@@ -178,3 +178,53 @@ a:focus-visible, button:focus-visible { outline: 2px solid #3182f6; outline-offs
 .match-thumb.compact .side { gap: 6px; }
 .card.compact .w-btn.medium { height: 40px; font-size: 14px; border-radius: 12px; }
 .card.compact .pending { height: 40px; font-size: 13px; }
+
+/* 날짜 묶음 머리글 */
+.date-head { grid-column: 1 / -1; position: sticky; top: 60px; z-index: 4; display: flex; align-items: baseline; gap: 8px; padding: 14px 4px 8px; margin-top: 6px; background: #f2f4f6; list-style: none; }
+.date-head:first-child { margin-top: 0; }
+.dh-md { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: #191f28; }
+.dh-dow { font-size: 15px; font-weight: 600; color: #4e5968; }
+.dh-rel { align-self: center; font-size: 12px; font-weight: 800; color: #fff; background: #3182f6; border-radius: 8px; padding: 3px 8px; }
+.date-head:not(.today) .dh-rel { background: #e5e8eb; color: #4e5968; }
+.dh-cnt { margin-left: auto; font-size: 13px; color: #8b95a1; }
+.card-meta .lg-name { font-weight: 600; color: #4e5968; }
+
+/* 날짜 고르기 */
+.dp { position: relative; margin: 0 0 12px; }
+.dp-row { display: flex; align-items: stretch; gap: 6px; }
+.dp-all, .dp-cal { flex: none; border: 0; border-radius: 14px; background: #fff; font: inherit; font-weight: 700; color: #4e5968; cursor: pointer; }
+.dp-all { padding: 0 12px; font-size: 14px; }
+.dp-all.on { background: #191f28; color: #fff; }
+.dp-cal { width: 44px; display: grid; place-items: center; }
+.dp-cal svg { width: 20px; height: 20px; stroke: #4e5968; }
+.dp-cal.on { background: #e8f3ff; }
+.dp-cal.on svg { stroke: #1b64da; }
+.dp-strip { flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
+.dp-strip::-webkit-scrollbar { display: none; }
+.dp-day { flex: none; width: 46px; height: 62px; border: 0; border-radius: 14px; background: #fff; font: inherit; display: grid; justify-items: center; align-content: center; gap: 1px; cursor: pointer; color: #191f28; }
+.dp-day small { font-size: 11px; color: #8b95a1; font-weight: 600; }
+.dp-day b { font-size: 17px; }
+.dp-day i { width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+.dp-day i.has { background: #3182f6; }
+.dp-day.sun b { color: #f04452; }
+.dp-day.sat b { color: #3182f6; }
+.dp-day.today small { color: #3182f6; font-weight: 800; }
+.dp-day:disabled { opacity: .35; cursor: default; }
+.dp-day.on { background: #3182f6; }
+.dp-day.on b, .dp-day.on small { color: #fff; }
+.dp-day.on i.has { background: #fff; }
+.dp-pop { position: absolute; z-index: 20; right: 0; top: 70px; width: min(340px, 100%); background: #fff; border-radius: 20px; padding: 16px; box-shadow: 0 12px 40px rgba(0,0,0,.14); }
+.dp-pop-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.dp-pop-head b { font-size: 16px; }
+.dp-pop-head button { width: 34px; height: 34px; border: 0; border-radius: 10px; background: #f2f4f6; font-size: 20px; cursor: pointer; color: #4e5968; }
+.dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+.dp-w { font-size: 12px; color: #8b95a1; font-weight: 600; padding: 4px 0; }
+.dp-w.sun { color: #f04452; } .dp-w.sat { color: #3182f6; }
+.dp-c { position: relative; height: 40px; border: 0; border-radius: 10px; background: transparent; font: inherit; font-size: 14px; font-weight: 600; color: #191f28; cursor: pointer; padding-bottom: 8px; }
+.dp-c em { position: absolute; left: 50%; bottom: 3px; transform: translateX(-50%); font-style: normal; font-size: 10px; font-weight: 800; color: #3182f6; }
+.dp-c:disabled { color: #c9cdd2; cursor: default; }
+.dp-c.out { opacity: .4; }
+.dp-c.today { box-shadow: inset 0 0 0 1.5px #3182f6; }
+.dp-c.on { background: #3182f6; color: #fff; }
+.dp-c.on em { color: #fff; }
+.dp-note { margin: 10px 0 0; font-size: 12px; color: #8b95a1; }
