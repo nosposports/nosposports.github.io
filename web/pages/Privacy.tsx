@@ -23,7 +23,16 @@ export function Privacy() {
         </p>
       </section>
       <section className="art-section">
-        <h2>4. 제3자 광고</h2>
+        <h2>4. 방문 통계</h2>
+        <p>
+          서비스 개선을 위해 Google 애널리틱스로 방문 통계(본 페이지, 방문 경로, 기기 종류 등)를 수집해요. 개인을 알아볼 수 있는
+          정보는 수집하지 않으며, Google이 쿠키를 사용할 수 있어요. 원하지 않으면{' '}
+          <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noreferrer">Google 애널리틱스 차단 부가기능</a>을
+          쓰거나 브라우저에서 쿠키를 차단할 수 있어요.
+        </p>
+      </section>
+      <section className="art-section">
+        <h2>5. 제3자 광고</h2>
         <p>
           이 사이트는 Google AdSense 등 제3자 광고 서비스를 이용해 광고를 게재할 수 있어요. 광고 사업자는 쿠키를 사용해 이용자의
           이 사이트 및 다른 사이트 방문 정보를 바탕으로 광고를 보여줄 수 있어요. 맞춤 광고는{' '}
@@ -33,7 +42,7 @@ export function Privacy() {
         </p>
       </section>
       <section className="art-section">
-        <h2>5. 변경</h2>
+        <h2>6. 변경</h2>
         <p>방침이 바뀌면 이 페이지에 시행일과 함께 알려드려요.</p>
       </section>
     </div>
