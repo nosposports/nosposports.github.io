@@ -42,6 +42,9 @@ export function fetchAllMatches(): Promise<Match[]> {
 }
 
 /** 한국 날짜 기준 오늘부터 n일 전까지의 경기인지 */
+/** 목록 주소의 ?r= 값: 모든 리그의 최근 이틀 경기 */
+export const RECENT_ROUND = '__recent2';
+
 export const withinDays = (date: string, n: number) => {
   const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
   const d = (Date.parse(today) - Date.parse(date)) / 864e5;
