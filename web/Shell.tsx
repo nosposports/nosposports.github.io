@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import App from '../src/App';
 import { AdSlot } from './AdSlot';
+import { InstallBar } from './InstallBar';
 import { SideInfo } from './SideInfo';
 import { Link } from './Link';
 import { currentPath, migrateHash, onRoute } from './nav';
@@ -112,6 +113,8 @@ export function Shell() {
       <div className="bottom-ad">
         <AdSlot where="bottom" />
       </div>
+
+      <InstallBar />
 
       <footer className="site-foot">
         <p>

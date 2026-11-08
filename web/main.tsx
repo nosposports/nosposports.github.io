@@ -9,3 +9,7 @@ createRoot(document.getElementById('root')!).render(
     <Shell />
   </StrictMode>,
 );
+
+if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
