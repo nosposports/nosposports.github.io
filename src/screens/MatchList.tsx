@@ -17,6 +17,9 @@ interface Props {
   onOpen: (m: Match) => void;
   onEditTeams: () => void;
   onRetry: () => void;
+  /** 대회·라운드 전체 보기 중이면 그 이름 */
+  round?: string | null;
+  onClearRound?: () => void;
 }
 
 type View = 'list' | 'grid';
@@ -64,7 +67,7 @@ function GridIcon() {
   );
 }
 
-export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onEditTeams, onRetry }: Props) {
+export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onEditTeams, onRetry, round, onClearRound }: Props) {
   const [view, setView] = useState<View>(loadView);
   const choose = (v: View) => {
     setView(v);
@@ -100,7 +103,17 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
       {!error && matches === null && <div className="empty">불러오는 중…</div>}
       {!error && matches?.length === 0 && <div className="empty">아직 볼 수 있는 경기가 없어요.</div>}
 
-      {leagues
+      {round && (
+        <div className="round-banner">
+          <span>
+            <small>이 대회·라운드 전체 경기</small>
+            <b>{round}</b>
+          </span>
+          <button onClick={onClearRound}>{leagues.length ? '내 리그로 돌아가기' : '리그 고르기'}</button>
+        </div>
+      )}
+
+      {!round && leagues
         .map((id) => leagueById(id))
         .filter((l) => l && !l.live)
         .map((l) => (
