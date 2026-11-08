@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import App from '../src/App';
 import { AdSlot } from './AdSlot';
+import { SideInfo } from './SideInfo';
 import { Link } from './Link';
 import { currentPath, migrateHash, onRoute } from './nav';
 import { Guide } from './pages/Guide';
@@ -100,11 +101,7 @@ export function Shell() {
 
         <aside className="side right">
           <AdSlot where="right" />
-          <div className="side-card">
-            <strong>결과는 절대 안 보여드려요</strong>
-            <p>점수·승패·썸네일을 가리고, 몇 세트까지 갔는지도 알 수 없게 세트 버튼을 항상 같은 개수로 보여줘요.</p>
-            <Link to="/guide">스포 피하는 방법 보기 ›</Link>
-          </div>
+          <SideInfo />
         </aside>
       </div>
 
