@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { closeView, graniteEvent } from '@apps-in-toss/web-framework';
 import type { Match } from './lib/types';
-import { fetchMatches } from './lib/api';
+import { fetchAllMatches, fetchMatches } from './lib/api';
 import { splitSelection } from './data/catalog';
 import { KEYS, loadJSON, saveJSON } from './lib/storage';
 import { runBackHandler } from './lib/back';
@@ -16,8 +16,30 @@ export type WatchedMap = Record<string, { sets: number[]; done: boolean }>;
 
 type Screen = { name: 'loading' } | { name: 'onboarding'; fromList?: boolean } | { name: 'list' } | { name: 'detail'; match: Match };
 
+/** 주소의 ?r=대회·라운드 (예: 프리미어리그 10R) — 그 라운드 전체 경기만 보기 */
+const getRound = () => {
+  try {
+    return new URLSearchParams(window.location.search).get('r');
+  } catch {
+    return null;
+  }
+};
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'loading' });
+  const [round, setRound] = useState<string | null>(getRound);
+  useEffect(() => {
+    const f = () => setRound(getRound());
+    window.addEventListener('popstate', f);
+    window.addEventListener('nospo-round', f);
+    return () => {
+      window.removeEventListener('popstate', f);
+      window.removeEventListener('nospo-round', f);
+    };
+  }, []);
+  useEffect(() => {
+    if (round) setScreen((s) => (s.name === 'loading' || s.name === 'onboarding' ? { name: 'list' } : s));
+  }, [round]);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [watched, setWatched] = useState<WatchedMap>({});
   const [positions, setPositions] = useState<Record<string, number>>({});
@@ -36,15 +58,18 @@ export default function App() {
       setWatched(w);
       setPositions(pos);
       // 토스 앱: 열면 항상 종목·리그 선택 화면부터. 웹사이트: 이미 골랐으면 바로 목록
-      setScreen(IS_WEB && fav.length ? { name: 'list' } : { name: 'onboarding' });
+      setScreen(IS_WEB && (fav.length || getRound()) ? { name: 'list' } : { name: 'onboarding' });
     })();
   }, []);
 
-  const load = useCallback(async (teams: string[]) => {
+  const load = useCallback(async (teams: string[], r: string | null) => {
     setError(false);
     setMatches(null);
     try {
-      setMatches(await fetchMatches(teams));
+      if (r) {
+        const all = await fetchAllMatches();
+        setMatches(all.filter((m) => m.league === r).sort((a, b) => b.date.localeCompare(a.date)));
+      } else setMatches(await fetchMatches(teams));
     } catch (e) {
       console.error('[nospo] fetchMatches', e);
       setError(true);
@@ -52,8 +77,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (screen.name === 'list') load(favorites);
-  }, [screen.name, favorites, load]);
+    if (screen.name === 'list') load(favorites, round);
+  }, [screen.name, favorites, round, load]);
 
   const markWatched = (matchId: string, setNo: number, matchDone: boolean) => {
     setWatched((prev) => {
@@ -181,7 +206,13 @@ export default function App() {
       onOpen={(m) => setScreen({ name: 'detail', match: m })}
       leagues={splitSelection(favorites).leagues}
       onEditTeams={() => setScreen({ name: 'onboarding', fromList: true })}
-      onRetry={() => load(favorites)}
+      onRetry={() => load(favorites, round)}
+      round={round}
+      onClearRound={() => {
+        window.history.pushState(null, '', '/');
+        setRound(null);
+        if (!favorites.length) setScreen({ name: 'onboarding' }); // 아직 리그를 안 고른 사람은 선택 화면으로
+      }}
     />
   );
 }
