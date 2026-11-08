@@ -23,16 +23,33 @@ function sanitize(raw: unknown): Match {
   return clean as unknown as Match;
 }
 
+let cache: { at: number; p: Promise<Match[]> } | null = null;
+/** 전체 경기 목록 (1분 동안은 같은 요청을 재사용) */
+export function fetchAllMatches(): Promise<Match[]> {
+  if (cache && Date.now() - cache.at < 60000) return cache.p;
+  const p = (async () => {
+    try {
+      const res = await fetch(`${DATA_URL}?t=${Math.floor(Date.now() / 300000)}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`matches ${res.status}`);
+      return ((await res.json()) as unknown[]).map(sanitize);
+    } catch (e) {
+      console.warn('[nospo] 원격 목록 실패, 내장 데이터 사용', e);
+      return DUMMY_MATCHES;
+    }
+  })();
+  cache = { at: Date.now(), p };
+  return p;
+}
+
+/** 한국 날짜 기준 오늘부터 n일 전까지의 경기인지 */
+export const withinDays = (date: string, n: number) => {
+  const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+  const d = (Date.parse(today) - Date.parse(date)) / 864e5;
+  return d >= 0 && d < n;
+};
+
 export async function fetchMatches(selection: string[]): Promise<Match[]> {
-  let list: Match[];
-  try {
-    const res = await fetch(`${DATA_URL}?t=${Math.floor(Date.now() / 300000)}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`matches ${res.status}`);
-    list = ((await res.json()) as unknown[]).map(sanitize);
-  } catch (e) {
-    console.warn('[nospo] 원격 목록 실패, 내장 데이터 사용', e);
-    list = DUMMY_MATCHES;
-  }
+  const list = await fetchAllMatches();
   const { leagues, teams } = splitSelection(selection);
   const mine = list.filter((m) => {
     const lid = m.leagueId ?? 'lol';
