@@ -40,6 +40,25 @@ export default function App() {
   useEffect(() => {
     if (round) setScreen((s) => (s.name === 'loading' || s.name === 'onboarding' ? { name: 'list' } : s));
   }, [round]);
+
+  // 웹사이트 머리글: 로고 = 첫 화면(종목·리그 고르기), '하이라이트' = 경기 목록 (이미 같은 주소여도 동작)
+  const favRef = useRef<string[]>([]);
+  useEffect(() => {
+    const home = () => {
+      setRound(null);
+      setScreen({ name: 'onboarding' });
+    };
+    const list = () => {
+      setRound(null);
+      setScreen(favRef.current.length ? { name: 'list' } : { name: 'onboarding' });
+    };
+    window.addEventListener('nospo-home', home);
+    window.addEventListener('nospo-list', list);
+    return () => {
+      window.removeEventListener('nospo-home', home);
+      window.removeEventListener('nospo-list', list);
+    };
+  }, []);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [watched, setWatched] = useState<WatchedMap>({});
   const [positions, setPositions] = useState<Record<string, number>>({});
@@ -58,7 +77,9 @@ export default function App() {
       setWatched(w);
       setPositions(pos);
       // 토스 앱: 열면 항상 종목·리그 선택 화면부터. 웹사이트: 이미 골랐으면 바로 목록
-      setScreen(IS_WEB && (fav.length || getRound()) ? { name: 'list' } : { name: 'onboarding' });
+      // 로고로 들어온 경우(history.state.home)는 항상 첫 화면
+      const wantHome = !!(window.history.state as { home?: boolean } | null)?.home;
+      setScreen(IS_WEB && !wantHome && (fav.length || getRound()) ? { name: 'list' } : { name: 'onboarding' });
     })();
   }, []);
 
@@ -76,6 +97,7 @@ export default function App() {
     }
   }, []);
 
+  favRef.current = favorites;
   useEffect(() => {
     if (screen.name === 'list') load(favorites, round);
   }, [screen.name, favorites, round, load]);
