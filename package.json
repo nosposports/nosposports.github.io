@@ -1,0 +1,22 @@
+{
+  "name": "nospo-site",
+  "private": true,
+  "type": "module",
+  "description": "노스포스포츠 웹사이트 (nospo.kr)",
+  "scripts": {
+    "dev": "vite -c vite.web.config.ts",
+    "build": "vite build -c vite.web.config.ts && node scripts-prerender.mjs"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "6.2.1",
+    "playwright": "1.63.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.6"
+  }
+}
