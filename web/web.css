@@ -1,0 +1,97 @@
+/* ---------- 웹사이트 전용 레이아웃 ---------- */
+html, body { background: #f2f4f6 !important; }
+.site { min-height: 100vh; display: flex; flex-direction: column; }
+.site-head { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e5e8eb; display: flex; align-items: center; gap: 24px; padding: 0 24px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #191f28; text-decoration: none; font-weight: 800; font-size: 18px; flex: none; }
+.brand img { border-radius: 8px; }
+.site-nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav a { flex: none; padding: 8px 12px; border-radius: 10px; color: #4e5968; text-decoration: none; font-size: 15px; font-weight: 600; }
+.site-nav a:hover { background: #f2f4f6; }
+.site-nav a.on { color: #3182f6; background: #e8f3ff; }
+
+.site-body { flex: 1; width: 100%; max-width: 1280px; margin: 0 auto; display: grid;
+  grid-template-columns: 300px minmax(0, 600px) 300px; justify-content: center; gap: 24px; padding: 0 24px; }
+.site-main { min-width: 0; }
+.site-main .page { padding-bottom: 48px; }
+.side { padding-top: 24px; }
+.side > * { position: sticky; top: 84px; }
+.side.right { display: grid; align-content: start; gap: 16px; }
+.side.right > .side-card { position: static; }
+.side-card { background: #fff; border-radius: 16px; padding: 16px; font-size: 14px; line-height: 1.55; color: #4e5968; }
+.side-card strong { color: #191f28; font-size: 15px; }
+.side-card p { margin: 6px 0 10px; }
+.side-card a { color: #3182f6; font-weight: 600; text-decoration: none; }
+
+.ad-box { width: 300px; min-height: 600px; border-radius: 12px; overflow: hidden; }
+.ad-box.placeholder { display: grid; place-items: center; background: repeating-linear-gradient(45deg, #eef0f3, #eef0f3 10px, #e5e8eb 10px, #e5e8eb 20px);
+  color: #b0b8c1; font-size: 13px; font-weight: 600; }
+.bottom-ad { display: none; padding: 0 16px 16px; }
+.bottom-ad .ad-box { width: 100%; min-height: 100px; }
+
+.site-foot { border-top: 1px solid #e5e8eb; background: #fff; padding: 20px 24px 28px; text-align: center; color: #8b95a1; font-size: 13px; line-height: 1.6; }
+.site-foot p { margin: 4px auto; max-width: 720px; }
+.site-foot a { color: #6b7684; }
+
+/* 넓지 않은 화면: 왼쪽 광고 숨김 → 더 좁으면 오른쪽도 숨기고 하단 광고 */
+@media (max-width: 1279px) {
+  .site-body { grid-template-columns: minmax(0, 600px) 300px; }
+  .side.left { display: none; }
+}
+@media (max-width: 960px) {
+  .site-body { grid-template-columns: minmax(0, 1fr); padding: 0; }
+  .side.right { display: none; }
+  .bottom-ad { display: block; }
+  .site-head { gap: 12px; padding: 0 16px; }
+  .brand span { display: none; }
+}
+
+/* 웹에서는 하단 고정 버튼을 가운데 칼럼 폭에 맞춘다 */
+.bottom-cta { position: sticky; bottom: 0; margin: 24px -20px 0; }
+.bottom-cta > * { max-width: none; }
+
+.web-back { max-width: 560px; margin: 0 auto; padding: 12px 20px 0; }
+.web-back + .page { padding-top: 4px; }
+
+/* TDS 대체 버튼·배지 */
+.w-btn { border: 0; border-radius: 14px; font: inherit; font-weight: 700; cursor: pointer; padding: 0 20px; }
+.w-btn.large { height: 52px; font-size: 16px; }
+.w-btn.xlarge { height: 56px; font-size: 17px; }
+.w-btn.medium { height: 42px; font-size: 15px; }
+.w-btn.block, .w-btn.full { width: 100%; }
+.w-btn.fill { background: #3182f6; color: #fff; }
+.w-btn.fill:hover { background: #1b64da; }
+.w-btn.weak { background: #e8f3ff; color: #1b64da; }
+.w-btn:disabled { opacity: .45; cursor: default; }
+.w-badge { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 700; background: #f2f4f6; color: #4e5968; }
+.w-badge.green { background: #e5fff1; color: #00a661; }
+
+/* 글 페이지 */
+.article { line-height: 1.7; }
+.art-section { background: #fff; border-radius: 20px; padding: 20px; margin-bottom: 12px; }
+.art-section h2 { font-size: 18px; margin: 0 0 10px; }
+.art-section h3 { font-size: 16px; margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
+.art-section p, .art-section li { font-size: 15px; color: #333d4b; }
+.art-section p { margin: 0 0 8px; }
+.art-section ul, .art-section ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.art-section a { color: #3182f6; }
+.league-box { border-top: 1px solid #f2f4f6; padding: 14px 0 6px; }
+.league-box:first-of-type { border-top: 0; padding-top: 0; }
+.league-box .teams { color: #8b95a1; font-size: 13px; }
+.tag { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #f2f4f6; color: #8b95a1; }
+.tag.live { background: #e8f3ff; color: #1b64da; }
+a:focus-visible, button:focus-visible { outline: 2px solid #3182f6; outline-offset: 2px; }
+
+/* 팀 소개 */
+.team-grid { list-style: none; padding: 0 !important; margin: 12px 0 0; display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 10px !important; }
+.team-grid li { display: flex; align-items: center; gap: 10px; background: #f9fafb; border-radius: 12px; padding: 10px 12px; }
+.team-grid li > span:last-child { display: grid; line-height: 1.35; }
+.team-grid small { color: #8b95a1; font-size: 12px; }
+.team-dot { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 11px; font-weight: 800; }
+@media (max-width: 420px) { .team-grid li { padding: 8px; gap: 8px; font-size: 14px; } .team-dot { width: 30px; height: 30px; font-size: 10px; } }
+.sport-jump { position: sticky; top: 60px; z-index: 5; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px 12px; padding: 8px 20px; background: #f2f4f6; }
+.sport-jump::-webkit-scrollbar { display: none; }
+.sport-section { scroll-margin-top: 120px; }
+.sport-section h2 { font-size: 20px; }
+.sport-section .league-box h3 { font-size: 16px; }
