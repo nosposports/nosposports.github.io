@@ -11,6 +11,8 @@ import { Faq } from './pages/Faq';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
 import { Privacy } from './pages/Privacy';
+import { LeaguePage } from './pages/LeaguePage';
+import { LEAGUE_PAGES } from './leaguePages';
 
 const NAV = [
   { path: '/', label: '하이라이트' },
@@ -22,7 +24,7 @@ const NAV = [
 
 export const PAGES: Record<string, { title: string; desc: string }> = {
   '': {
-    title: '노스포스포츠 — 결과 스포일러 없이 보는 스포츠 하이라이트',
+    title: '노스포스포츠 NOSPO — 결과 스포일러 없이 보는 스포츠 하이라이트',
     desc: 'LCK·KBO·KBL·NBA·K리그·프리미어리그 공식 하이라이트를 점수와 승패를 숨긴 채 볼 수 있는 무스포일러 하이라이트 사이트.',
   },
   leagues: { title: '리그 안내 · 노스포스포츠', desc: '노스포스포츠에서 볼 수 있는 리그와 리그별 경기 방식, 결과 모르고 보는 요령.' },
@@ -32,6 +34,7 @@ export const PAGES: Record<string, { title: string; desc: string }> = {
   about: { title: '소개 · 노스포스포츠', desc: '"결과 모르고 보고 싶다"는 마음으로 만든 무스포일러 하이라이트 모음.' },
   contact: { title: '문의 · 노스포스포츠', desc: '오류 제보, 리그 추가 요청, 저작권 관련 요청은 이메일로 보내 주세요.' },
   privacy: { title: '개인정보처리방침 · 노스포스포츠', desc: '노스포스포츠 개인정보처리방침.' },
+  ...Object.fromEntries(Object.entries(LEAGUE_PAGES).map(([k, v]) => [k, { title: v.title, desc: v.desc }])),
 };
 
 function setMeta(route: string) {
@@ -74,7 +77,8 @@ export function Shell() {
     route === 'faq' ? <Faq /> :
     route === 'about' ? <About /> :
     route === 'contact' ? <Contact /> :
-    route === 'privacy' ? <Privacy /> : <App />;
+    route === 'privacy' ? <Privacy /> :
+    LEAGUE_PAGES[route] ? <LeaguePage key={route} slug={route} /> : <App />;
 
   return (
     <div className="site">
@@ -113,6 +117,14 @@ export function Shell() {
         <p>
           노스포스포츠는 각 리그·중계사의 공식 유튜브 하이라이트를 유튜브 플레이어로 그대로 보여주는 비공식 서비스예요.
           영상의 저작권은 각 권리자에게 있어요.
+        </p>
+        <p className="foot-leagues">
+          {Object.entries(LEAGUE_PAGES).map(([k, v], i) => (
+            <span key={k}>
+              {i > 0 && ' · '}
+              <Link to={`/${k}`}>{v.name} 하이라이트</Link>
+            </span>
+          ))}
         </p>
         <p>
           <Link to="/about">소개</Link> · <Link to="/contact">문의</Link> · <Link to="/privacy">개인정보처리방침</Link> ·{' '}
