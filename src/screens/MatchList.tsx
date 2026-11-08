@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Badge, Button } from '@toss/tds-mobile';
 import type { Match } from '../lib/types';
 import { MatchThumb } from '../components/MatchThumb';
+import { DatePicker } from '../components/DatePicker';
 import type { WatchedMap } from '../App';
 import { leagueById } from '../data/catalog';
 
@@ -27,6 +28,15 @@ const loadView = (): View => {
     return 'list';
   }
 };
+
+const DOW = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+const kstToday = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+function dateHead(d: string) {
+  const [, m, day] = d.split('-');
+  const diff = Math.round((Date.parse(kstToday()) - Date.parse(d)) / 864e5);
+  const rel = diff === 0 ? '오늘' : diff === 1 ? '어제' : diff === 2 ? '그저께' : diff > 0 && diff < 7 ? `${diff}일 전` : '';
+  return { md: `${Number(m)}월 ${Number(day)}일`, dow: DOW[new Date(`${d}T00:00:00+09:00`).getDay()], rel, today: diff === 0 };
+}
 
 const fmtDate = (d: string) => {
   const [, m, day] = d.split('-');
@@ -65,6 +75,9 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
     }
   };
   const grid = view === 'grid';
+  const [day, setDay] = useState<string | null>(null);
+  const counts = (matches ?? []).reduce<Record<string, number>>((acc, m) => ((acc[m.date] = (acc[m.date] ?? 0) + 1), acc), {});
+  const shown = day ? (matches ?? []).filter((m) => m.date === day) : matches;
 
   return (
     <div className="page">
@@ -96,9 +109,11 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
           </div>
         ))}
 
+      {!!matches?.length && <DatePicker counts={counts} value={day} onChange={setDay} />}
+
       {!!matches?.length && (
         <div className="list-tools">
-          <span>{matches.length}경기</span>
+          <span>{day ? `${Number(day.slice(5, 7))}월 ${Number(day.slice(8))}일 · ` : '전체 · '}{shown?.length ?? 0}경기</span>
           <div className="view-toggle" role="group" aria-label="보기 방식">
             <button className={!grid ? 'on' : ''} aria-pressed={!grid} aria-label="크게 보기" onClick={() => choose('list')}>
               <ListIcon />
@@ -111,13 +126,28 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
       )}
 
       <ul className={`cards ${grid ? 'grid2' : ''}`}>
-        {matches?.map((m) => {
+        {shown
+          ?.reduce<{ date: string; items: Match[] }[]>((acc, m) => {
+            const last = acc[acc.length - 1];
+            if (last && last.date === m.date) last.items.push(m);
+            else acc.push({ date: m.date, items: [m] });
+            return acc;
+          }, [])
+          .map((g) => {
+            const h = dateHead(g.date);
+            return (
+              <Fragment key={g.date}>
+                <li className={`date-head ${h.today ? 'today' : ''}`}>
+                  <span className="dh-md">{h.md}</span>
+                  <span className="dh-dow">{h.dow}</span>
+                  {h.rel && <span className="dh-rel">{h.rel}</span>}
+                  <span className="dh-cnt">{g.items.length}경기</span>
+                </li>
+                {g.items.map((m) => {
           const done = watched[m.matchId]?.done;
           return (
             <li key={m.matchId} className={`card ${grid ? 'compact' : ''}`}>
               <div className="card-meta">
-                <span>{fmtDate(m.date)}</span>
-                {!grid && <span className="dot">·</span>}
                 <span className="lg-name">{m.league}</span>
                 {done && (
                   <Badge size="xsmall" variant="weak" color="green" className="badge">
@@ -138,7 +168,10 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
               )}
             </li>
           );
-        })}
+                })}
+              </Fragment>
+            );
+          })}
       </ul>
     </div>
   );
