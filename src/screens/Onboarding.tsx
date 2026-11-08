@@ -5,6 +5,8 @@ import { fetchAllMatches, withinDays } from '../lib/api';
 import type { Match } from '../lib/types';
 import { SportIcon } from '../components/SportIcon';
 import { TeamMark } from '../components/MatchThumb';
+import { navigate } from '../../web/nav';
+import { RECENT_ROUND } from '../lib/api';
 
 interface Props {
   initial: string[];
@@ -82,10 +84,18 @@ export function Onboarding({ initial, onDone }: Props) {
         </h1>
         <p>점수·승패·썸네일 없이 공식 하이라이트를 골라 보는 곳이에요.</p>
         <div className="hero-stats">
-          <span>
+          <button
+            className="hero-recent"
+            onClick={() => {
+              navigate('/?r=' + RECENT_ROUND);
+              window.dispatchEvent(new Event('nospo-round'));
+              window.scrollTo(0, 0);
+            }}
+          >
             <i className="live-dot" />
             최근 이틀 새 경기 <b>{recentTotal || '-'}</b>개
-          </span>
+            <span className="hero-recent-go">보기 ›</span>
+          </button>
           <span>{liveLeagues}개 리그 자동 업데이트</span>
         </div>
       </section>

@@ -1,8 +1,11 @@
 import { Fragment, useState } from 'react';
 import { Badge, Button } from '@toss/tds-mobile';
 import type { Match } from '../lib/types';
+import { RECENT_ROUND } from '../lib/api';
 import { MatchThumb } from '../components/MatchThumb';
 import { DatePicker } from '../components/DatePicker';
+import { FeedAd, adOn } from '../../web/AdSlot';
+import { ADSENSE } from '../../web/adsense';
 import type { WatchedMap } from '../App';
 import { leagueById } from '../data/catalog';
 
@@ -81,6 +84,9 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
   const [day, setDay] = useState<string | null>(null);
   const counts = (matches ?? []).reduce<Record<string, number>>((acc, m) => ((acc[m.date] = (acc[m.date] ?? 0) + 1), acc), {});
   const shown = day ? (matches ?? []).filter((m) => m.date === day) : matches;
+  // 목록 사이 광고: 카드 N개마다 1개 (영상 보는 화면에는 넣지 않음)
+  const feedOn = adOn('feed');
+  let cardNo = 0;
 
   return (
     <div className="page">
@@ -106,8 +112,8 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
       {round && (
         <div className="round-banner">
           <span>
-            <small>이 대회·라운드 전체 경기</small>
-            <b>{round}</b>
+            <small>{round === RECENT_ROUND ? '모든 리그 · 어제와 오늘' : '이 대회·라운드 전체 경기'}</small>
+            <b>{round === RECENT_ROUND ? '최근 이틀 경기' : round}</b>
           </span>
           <button onClick={onClearRound}>{leagues.length ? '내 리그로 돌아가기' : '리그 고르기'}</button>
         </div>
@@ -158,8 +164,11 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
                 </li>
                 {g.items.map((m) => {
           const done = watched[m.matchId]?.done;
+          cardNo += 1;
+          const adAfter = feedOn && cardNo % ADSENSE.feedEvery === 0;
           return (
-            <li key={m.matchId} className={`card ${grid ? 'compact' : ''}`}>
+            <Fragment key={m.matchId}>
+            <li className={`card ${grid ? 'compact' : ''}`}>
               <div className="card-meta">
                 <span className="lg-name">{m.league}</span>
                 {done && (
@@ -180,6 +189,8 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
                 <div className="pending">{grid ? '준비 중' : '하이라이트 준비 중 · 보통 경기 다음 날 올라와요'}</div>
               )}
             </li>
+            {adAfter && <FeedAd />}
+            </Fragment>
           );
                 })}
               </Fragment>
