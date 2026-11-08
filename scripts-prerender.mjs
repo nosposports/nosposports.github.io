@@ -6,7 +6,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
 const DIST = new URL('./dist-web/', import.meta.url).pathname;
-const ROUTES = ['', 'leagues', 'teams', 'guide', 'faq', 'about', 'contact', 'privacy'];
+const ROUTES = ['', 'lck', 'kbo', 'kbl', 'kleague', 'epl', 'nba', 'leagues', 'teams', 'guide', 'faq', 'about', 'contact', 'privacy'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');
 
