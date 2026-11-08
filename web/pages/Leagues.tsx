@@ -1,7 +1,9 @@
 import { SPORTS } from '../../src/data/catalog';
+import { LEAGUE_PAGES } from '../leaguePages';
+import { Link } from '../Link';
 
 /** 리그별 소개와 '결과 모르고 보기' 요령. 유튜브에서 가져오지 않은 자체 작성 콘텐츠 */
-const INFO: Record<string, { what: string; format: string; tip: string }> = {
+export const INFO: Record<string, { what: string; format: string; tip: string }> = {
   lol: {
     what: '한국 리그 오브 레전드 프로 리그예요. 국내 최상위 10개 팀이 경기를 치르고, 상위 팀은 국제 대회(MSI·월즈)에 나가요.',
     format: '한 경기는 여러 세트로 이뤄져요. 3판 2선승(Bo3)이나 5판 3선승(Bo5)이 대부분이라, 몇 세트까지 갔는지만 알아도 흐름이 보여요.',
@@ -54,6 +56,10 @@ export function Leagues() {
                 <h3>
                   {l.name} {l.live ? <span className="tag live">볼 수 있어요</span> : <span className="tag">준비 중</span>}
                 </h3>
+                {(() => {
+                  const slug = Object.keys(LEAGUE_PAGES).find((k) => LEAGUE_PAGES[k].leagueId === l.id);
+                  return slug ? <Link to={`/${slug}`} className="lp-more">{l.name} 하이라이트 페이지 ›</Link> : null;
+                })()}
                 {info ? (
                   <>
                     <p>{info.what}</p>
