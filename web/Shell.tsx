@@ -83,13 +83,13 @@ export function Shell() {
   return (
     <div className="site">
       <header className="site-head">
-        <Link className="brand" to="/">
+        <Link className="brand" to="/" signal="nospo-home">
           <img src="/logo.png" alt="" width={32} height={32} />
           <span>노스포스포츠</span>
         </Link>
         <nav className="site-nav" aria-label="메뉴">
           {NAV.map((r) => (
-            <Link key={r.path} to={r.path} className={`/${route}` === r.path ? 'on' : ''}>
+            <Link key={r.path} to={r.path} className={`/${route}` === r.path ? 'on' : ''} signal={r.path === '/' ? 'nospo-list' : undefined}>
               {r.label}
             </Link>
           ))}

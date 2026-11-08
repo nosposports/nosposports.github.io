@@ -7,10 +7,10 @@ export const currentPath = () => {
   return p;
 };
 
-export function navigate(to: string) {
+export function navigate(to: string, extra?: Record<string, unknown>) {
   const url = to.startsWith('/') ? to : `/${to}`;
-  if (url === window.location.pathname) return;
-  window.history.pushState({ route: url }, '', url);
+  if (url !== window.location.pathname + window.location.search) window.history.pushState({ route: url, ...extra }, '', url);
+  else if (extra) window.history.replaceState({ ...(window.history.state ?? {}), ...extra }, '', url);
   subs.forEach((f) => f());
 }
 
