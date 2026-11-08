@@ -284,3 +284,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid #3182f6; outline-offs
 .install-bar .ib-btn:hover { background: #1b64da; }
 .install-bar .ib-guide { margin: 10px 0 0; padding: 14px 18px 14px 36px; background: #e8f3ff; border-radius: 16px; color: #333d4b; font-size: 14px; line-height: 1.7; }
 .install-bar .ib-guide b { color: #1b64da; }
+
+/* 히어로 '최근 이틀 새 경기' 버튼 */
+.hero-recent { display: inline-flex; align-items: center; gap: 6px; border: 0; cursor: pointer; background: rgba(255,255,255,.16); color: #fff; border-radius: 12px; padding: 7px 12px; font: inherit; font-size: 14px; font-weight: 600; }
+.hero-recent b { font-size: 15px; }
+.hero-recent:hover { background: rgba(255,255,255,.26); }
+.hero-recent-go { margin-left: 4px; padding: 2px 8px; border-radius: 999px; background: #fff; color: #1b64da; font-size: 12px; font-weight: 800; }
