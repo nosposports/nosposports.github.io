@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { closeView, graniteEvent } from '@apps-in-toss/web-framework';
 import type { Match } from './lib/types';
-import { fetchAllMatches, fetchMatches } from './lib/api';
+import { RECENT_ROUND, fetchAllMatches, fetchMatches, withinDays } from './lib/api';
 import { splitSelection } from './data/catalog';
 import { KEYS, loadJSON, saveJSON } from './lib/storage';
 import { runBackHandler } from './lib/back';
@@ -89,7 +89,11 @@ export default function App() {
     try {
       if (r) {
         const all = await fetchAllMatches();
-        setMatches(all.filter((m) => m.league === r).sort((a, b) => b.date.localeCompare(a.date)));
+        setMatches(
+          all
+            .filter((m) => (r === RECENT_ROUND ? withinDays(m.date, 2) : m.league === r))
+            .sort((a, b) => b.date.localeCompare(a.date)),
+        );
       } else setMatches(await fetchMatches(teams));
     } catch (e) {
       console.error('[nospo] fetchMatches', e);
