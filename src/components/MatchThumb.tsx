@@ -14,18 +14,18 @@ export function TeamMark({ teamId, size = 44 }: { teamId: string; size?: number 
   );
 }
 
-export function MatchThumb({ teamA, teamB }: { teamA: string; teamB: string }) {
+export function MatchThumb({ teamA, teamB, compact = false }: { teamA: string; teamB: string; compact?: boolean }) {
   const a = teamById(teamA);
   const b = teamById(teamB);
   return (
-    <div className="match-thumb">
+    <div className={`match-thumb ${compact ? 'compact' : ''}`}>
       <div className="side">
-        <TeamMark teamId={teamA} />
+        <TeamMark teamId={teamA} size={compact ? 34 : 44} />
         <span className="team-name">{a.name}</span>
       </div>
       <span className="vs">VS</span>
       <div className="side">
-        <TeamMark teamId={teamB} />
+        <TeamMark teamId={teamB} size={compact ? 34 : 44} />
         <span className="team-name">{b.name}</span>
       </div>
     </div>
