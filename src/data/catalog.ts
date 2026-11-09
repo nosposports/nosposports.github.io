@@ -134,7 +134,7 @@ export const SPORTS: Sport[] = [
     leagues: [
       { id: 'kleague', name: 'K리그1', live: true },
       { id: 'epl', name: '프리미어리그', live: true },
-      { id: 'laliga', name: '라리가', live: false },
+      { id: 'laliga', name: '라리가', live: true },
       { id: 'bundesliga', name: '분데스리가', live: false },
       { id: 'seriea', name: '세리에 A', live: false },
       { id: 'ucl', name: '챔피언스리그', live: false },
