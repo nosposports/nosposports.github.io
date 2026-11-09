@@ -23,6 +23,7 @@ const LEAGUE_DESC: Record<string, string> = {
   vw: '준비 중',
   kleague: '풀·2분 하이라이트',
   epl: '풀·2분 하이라이트',
+  laliga: '2분 하이라이트',
 };
 const LEAGUE_BADGE: Record<string, [string, string]> = {
   lol: ['LCK', '#191f28'], kbo: ['KBO', '#0b2a5b'], mlb: ['MLB', '#0d2b56'], kbl: ['KBL', '#d6001c'], nba: ['NBA', '#1d428a'],
