@@ -35,6 +35,13 @@ export const LEAGUE_PAGES: Record<string, { leagueId: string; name: string; titl
     h1: '프리미어리그 하이라이트, 결과 모르고 보기',
     keywords: ['EPL 하이라이트', '프리미어리그 하이라이트 스포 없이'],
   },
+  laliga: {
+    leagueId: 'laliga', name: '라리가',
+    title: '라리가 하이라이트 스포 없이 보기 · 노스포스포츠',
+    desc: '스페인 라리가 라운드별 하이라이트를 점수·승패 없이 보세요. 레알 마드리드·바르셀로나 경기도 결과 모르고 볼 수 있어요.',
+    h1: '라리가 하이라이트, 결과 모르고 보기',
+    keywords: ['라리가 하이라이트', '스페인 축구 하이라이트 스포 없이'],
+  },
   nba: {
     leagueId: 'nba', name: 'NBA',
     title: 'NBA 하이라이트 스포 없이 보기 · 노스포스포츠',

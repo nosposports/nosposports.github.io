@@ -26,7 +26,7 @@ const NAV = [
 export const PAGES: Record<string, { title: string; desc: string }> = {
   '': {
     title: '노스포스포츠 NOSPO — 결과 스포일러 없이 보는 스포츠 하이라이트',
-    desc: 'LCK·KBO·KBL·NBA·K리그·프리미어리그 공식 하이라이트를 점수와 승패를 숨긴 채 볼 수 있는 무스포일러 하이라이트 사이트.',
+    desc: 'LCK·KBO·KBL·NBA·K리그·프리미어리그·라리가 공식 하이라이트를 점수와 승패를 숨긴 채 볼 수 있는 무스포일러 하이라이트 사이트.',
   },
   leagues: { title: '리그 안내 · 노스포스포츠', desc: '노스포스포츠에서 볼 수 있는 리그와 리그별 경기 방식, 결과 모르고 보는 요령.' },
   teams: { title: '팀 소개 · 노스포스포츠', desc: 'LCK·KBO·KBL 팀과 연고지. 응원 팀을 골라 그 팀 경기만 스포 없이 보세요.' },
