@@ -12,7 +12,7 @@ export function About() {
       </section>
       <section className="art-section">
         <h2>지금 볼 수 있는 리그</h2>
-        <p>LCK, KBO, KBL, NBA, K리그1, 프리미어리그. 다른 리그도 차례로 연결하고 있어요.</p>
+        <p>LCK, KBO, KBL, NBA, K리그1, 프리미어리그, 라리가. 다른 리그도 차례로 연결하고 있어요.</p>
       </section>
       <section className="art-section">
         <h2>영상과 저작권</h2>

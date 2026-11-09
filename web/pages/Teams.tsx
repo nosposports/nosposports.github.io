@@ -20,6 +20,7 @@ const LEAGUE_INTRO: Record<string, string> = {
   vw: '여자부 팀들이에요. 결과가 드러나지 않는 공식 경기 하이라이트 채널을 찾고 있어요.',
   kleague: '팀 선택 없이 리그 전체 경기를 보여드려요. 팀별 보기는 준비 중이에요.',
   epl: '팀 선택 없이 리그 전체 경기를 보여드려요. 팀별 보기는 준비 중이에요.',
+  laliga: '팀 선택 없이 리그 전체 경기를 보여드려요. 팀별 보기는 준비 중이에요.',
 };
 
 function TeamGrid({ teams }: { teams: Team[] }) {

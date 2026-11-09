@@ -39,6 +39,11 @@ export const INFO: Record<string, { what: string; format: string; tip: string }>
     format: '승점으로 순위를 정하고, 하위 3팀은 2부로 강등돼요.',
     tip: '경기 다음 날이면 대부분 하이라이트가 올라와요.',
   },
+  laliga: {
+    what: '스페인 프로축구 1부 리그예요. 20개 팀이 홈·원정으로 38경기씩 치러요.',
+    format: '승점으로 순위를 정하고, 하위 3팀은 2부로 강등돼요.',
+    tip: '쿠팡플레이의 2분 하이라이트를 보여줘요. 경기 시간이 한국 새벽이라 아침에 확인하기 좋아요.',
+  },
 };
 
 export function Leagues() {
