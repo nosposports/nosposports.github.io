@@ -4,8 +4,6 @@ import type { Match } from '../lib/types';
 import { RECENT_ROUND } from '../lib/api';
 import { MatchThumb } from '../components/MatchThumb';
 import { DatePicker } from '../components/DatePicker';
-import { FeedAd, adOn } from '../../web/AdSlot';
-import { ADSENSE } from '../../web/adsense';
 import type { WatchedMap } from '../App';
 import { leagueById } from '../data/catalog';
 
@@ -85,7 +83,6 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
   const counts = (matches ?? []).reduce<Record<string, number>>((acc, m) => ((acc[m.date] = (acc[m.date] ?? 0) + 1), acc), {});
   const shown = day ? (matches ?? []).filter((m) => m.date === day) : matches;
   // 목록 사이 광고: 카드 N개마다 1개 (영상 보는 화면에는 넣지 않음)
-  const feedOn = adOn('feed');
   let cardNo = 0;
 
   return (
@@ -165,7 +162,6 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
                 {g.items.map((m) => {
           const done = watched[m.matchId]?.done;
           cardNo += 1;
-          const adAfter = feedOn && cardNo % ADSENSE.feedEvery === 0;
           return (
             <Fragment key={m.matchId}>
             <li className={`card ${grid ? 'compact' : ''}`}>
@@ -189,7 +185,6 @@ export function MatchList({ matches, leagues, error, watched, adFor, onOpen, onE
                 <div className="pending">{grid ? '준비 중' : '하이라이트 준비 중 · 보통 경기 다음 날 올라와요'}</div>
               )}
             </li>
-            {adAfter && <FeedAd />}
             </Fragment>
           );
                 })}
