@@ -13,7 +13,7 @@ git clone -q --depth 1 https://github.com/nosposports/nosposports.github.io "$WO
 cd "$WORK/repo"
 echo "기준: GitHub $(git log --oneline -1)"
 for f in "$@"; do mkdir -p "$(dirname "$f")"; cp "$SITE/$f" "$f"; echo "  덮어씀: $f"; done
-if [ -d "$SITE/node_modules" ]; then cp -rL "$SITE/node_modules" node_modules; else npm ci --silent; fi
+if [ -d "$SITE/node_modules" ]; then cp -a "$SITE/node_modules" node_modules; else npm ci --silent; fi
 npx vite build -c vite.web.config.ts >"$WORK/build.log" 2>&1 \
   || { echo "빌드 실패:"; grep -iE "error|missing|not exported" "$WORK/build.log" | head -20; exit 1; }
 # 프리렌더: 로컬 playwright가 브라우저와 버전이 안 맞으면 전역 playwright 사용
