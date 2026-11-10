@@ -22,6 +22,8 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run build
+      # 배포 확인용: nospo.kr/version.txt 에 이 배포의 커밋 번호를 남긴다
+      - run: echo "$GITHUB_SHA" > dist-web/version.txt
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist-web
