@@ -1,10 +1,8 @@
 import type { Match } from './types';
-import { DUMMY_MATCHES } from '../data/dummyMatches';
 import { leagueById, splitSelection } from '../data/catalog';
 
 /**
- * 자동 갱신되는 경기 목록 (GitHub 저장소의 matches.json, 30분마다 자동 업데이트)
- * 불러오지 못하면 앱에 들어 있는 데이터로 대체한다.
+ * 자동 갱신되는 경기 목록 (GitHub 저장소의 matches.json, 10분마다 자동 업데이트)
  */
 const DATA_URL = 'https://raw.githubusercontent.com/changyongone-star/nospo-data/main/matches.json';
 
@@ -24,20 +22,30 @@ function sanitize(raw: unknown): Match {
 }
 
 let cache: { at: number; p: Promise<Match[]> } | null = null;
-/** 전체 경기 목록 (1분 동안은 같은 요청을 재사용) */
+
+async function load(): Promise<Match[]> {
+  const res = await fetch(`${DATA_URL}?t=${Math.floor(Date.now() / 300000)}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`matches ${res.status}`);
+  return ((await res.json()) as unknown[]).map(sanitize);
+}
+
+/**
+ * 전체 경기 목록 (1분 동안은 같은 요청을 재사용).
+ * 못 불러오면 한 번 더 시도하고, 그래도 안 되면 오류를 던진다 — 옛날 목록을 말없이 보여주지 않는다.
+ */
 export function fetchAllMatches(): Promise<Match[]> {
   if (cache && Date.now() - cache.at < 60000) return cache.p;
-  const p = (async () => {
-    try {
-      const res = await fetch(`${DATA_URL}?t=${Math.floor(Date.now() / 300000)}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`matches ${res.status}`);
-      return ((await res.json()) as unknown[]).map(sanitize);
-    } catch (e) {
-      console.warn('[nospo] 원격 목록 실패, 내장 데이터 사용', e);
-      return DUMMY_MATCHES;
-    }
-  })();
-  cache = { at: Date.now(), p };
+  const p = load().catch(async (e) => {
+    console.warn('[nospo] 목록 불러오기 실패, 다시 시도', e);
+    await new Promise((r) => setTimeout(r, 1500));
+    return load();
+  });
+  const entry = { at: Date.now(), p };
+  cache = entry;
+  // 실패한 결과는 캐시에 남기지 않는다 (다시 시도 버튼이 바로 새로 불러오도록)
+  p.catch(() => {
+    if (cache === entry) cache = null;
+  });
   return p;
 }
 
