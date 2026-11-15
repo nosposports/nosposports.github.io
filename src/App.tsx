@@ -30,11 +30,16 @@ export default function App() {
   const [round, setRound] = useState<string | null>(getRound);
   useEffect(() => {
     const f = () => setRound(getRound());
+    // 오른쪽 '방금 올라온 하이라이트' 등에서 대회·라운드를 고르면, 경기 화면에 있더라도 그 목록으로 이동
+    const pick = () => {
+      setRound(getRound());
+      setScreen({ name: 'list' });
+    };
     window.addEventListener('popstate', f);
-    window.addEventListener('nospo-round', f);
+    window.addEventListener('nospo-round', pick);
     return () => {
       window.removeEventListener('popstate', f);
-      window.removeEventListener('nospo-round', f);
+      window.removeEventListener('nospo-round', pick);
     };
   }, []);
   useEffect(() => {
