@@ -17,7 +17,7 @@ interface Props {
   fullscreen: boolean;
 }
 
-const END_GUARD = 1.5; // 종료 n초 전에 정지 → 유튜브 종료 화면(추천 영상)이 뜨기 전에 닫음
+const END_GUARD = 2; // 종료 n초(1배속 기준) 전에 정지 → 유튜브 종료 화면(추천 영상)이 뜨기 전에 닫음. 배속이면 그만큼 일찍
 const YT_ORIGIN = 'https://www.youtube.com';
 const ST = { ENDED: 0, PLAYING: 1, PAUSED: 2 } as const;
 
@@ -37,6 +37,7 @@ export function SpoilerFreePlayer(props: Props) {
   const captionsOffRef = useRef(false);
   const timeRef = useRef(startAt);
   const durRef = useRef(0);
+  const rateRef = useRef(1);
 
   const cb = useRef(props);
   cb.current = props;
@@ -118,11 +119,13 @@ export function SpoilerFreePlayer(props: Props) {
       } else if (data.event === 'onError') {
         cb.current.onEmbedError(Number(data.info));
       } else if (data.event === 'infoDelivery' && data.info && typeof data.info === 'object') {
-        const info = data.info as { currentTime?: number; duration?: number; playerState?: number };
+        const info = data.info as { currentTime?: number; duration?: number; playerState?: number; playbackRate?: number };
         if (typeof info.currentTime === 'number') timeRef.current = info.currentTime;
         if (typeof info.duration === 'number' && info.duration > 0) durRef.current = info.duration;
         if (typeof info.playerState === 'number') handleState(info.playerState);
-        if (durRef.current > 0 && durRef.current - timeRef.current <= END_GUARD) finish();
+        if (typeof info.playbackRate === 'number' && info.playbackRate > 0) rateRef.current = info.playbackRate;
+        // 배속 재생·끝부분으로 건너뛰기에도 추천 화면이 뜨기 전에 멈추도록, 남은 시간 기준을 배속만큼 늘린다
+        if (durRef.current > 0 && durRef.current - timeRef.current <= END_GUARD * Math.max(1, rateRef.current)) finish();
       }
     };
     window.addEventListener('message', onMessage);
