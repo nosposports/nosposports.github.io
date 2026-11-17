@@ -1,7 +1,7 @@
 # 노스포스포츠(nospo.kr) 작업 인수인계
 
 새 Claude 세션이 이 파일부터 읽고 이어서 작업한다. 사용자와는 **한국어**로 대화한다.
-마지막 갱신: 2026-11-11 (운영 점검 반영)
+마지막 갱신: 2026-11-17
 
 ## 한 줄 요약
 결과 스포일러 없이 공식 유튜브 하이라이트를 보는 웹사이트. 점수·승패·썸네일·영상 길이를 숨기고,
@@ -42,6 +42,15 @@
 - 사이트는 matches.json을 못 받으면 한 번 재시도 후 "경기 목록을 불러오지 못했어요 / 다시 시도"를 보여준다 (예전 내장 목록 대체는 없앰).
 
 ## 작업 환경과 올리는 방법
+### Claude Code(사용자 PC)에서 작업할 때 — 권장
+- 두 저장소를 클론해서 작업하고 **git push로 올린다** (브라우저 업로드 불필요).
+  `git clone https://github.com/nosposports/nosposports.github.io` / `git clone https://github.com/changyongone-star/nospo-data`
+- push 전: `npm ci` 후 `npm run build`가 끝까지 통과해야 한다 (빌드+프리렌더, playwright chromium 필요: `npx playwright install chromium`).
+  또는 `tools/precheck.sh <바꾼 파일들>`(GitHub 현재본 + 바꾼 파일만으로 빌드).
+- push 후: 2~3분 뒤 `curl -s "https://nospo.kr/version.txt?t=$(date +%s)"`가 `git rev-parse HEAD`와 같은지 확인.
+- 커밋 메시지는 한국어로 짧게. main에 바로 push (사용자 1인 프로젝트).
+
+### 클라우드 세션(Cowork)에서 작업할 때
 - 이 세션 도구에는 GitHub 쓰기 권한이 없다. **사용자 PC의 크롬(Claude in Chrome)에서 GitHub 웹 업로드**로 올린다.
   - 크롬은 GitHub `changyongone-star` 계정에 로그인돼 있어야 함 (조직 `nosposports` 소유자).
   - 업로드: `https://github.com/<저장소>/upload/main/<폴더>` → 파일 입력에 업로드 → `Commit changes` 클릭.
@@ -66,6 +75,22 @@
 - 애드센스: 게시자 `ca-pub-2882245715696743`, `ads.txt` 등록, **사이트 검토 중**(2026-11-10 접수, 최대 4주).
 - 방문 통계: Google 태그 `GTM-MJX72LFL` → GA4. 검색 등록: Google Search Console(HTML 파일), 네이버(메타 태그) 완료.
 - 문의 메일: econoscope@gmail.com
+
+## 최근 결정 (2026-11-15~17)
+- **재생 가림막(썸네일·제목을 덮는 오버레이)은 하지 않는다.** 유튜브 정책 위반:
+  RMF "You must not display overlays ... in front of any part of a YouTube embedded player",
+  Developer Policies 가이드 "video metadata such as thumbnail and title must be visible ... and unmodified".
+  지금 방식(세트를 누르기 전에는 플레이어 자체를 띄우지 않음)은 유지.
+- 반영됨: 경기 화면에서 오른쪽 '방금 올라온 하이라이트'를 누르면 그 목록으로 이동(버그 수정),
+  배속 재생 시 끝부분 멈춤을 배속만큼 일찍.
+- **보류(사용자가 '하지마')**: 영상 하나인 경기 바로 재생, 첫 화면 '새 경기 확인 중…/최근 7일 경기 N개'.
+  코드는 `drafts/hero-onetap/`에 보관. 사용자가 다시 요청하기 전엔 올리지 않는다.
+- 미결정: NBA는 수집 영상 대부분이 한국 재생 불가 → '준비 중'으로 내릴지 사용자 결정 대기. NBA 날짜는 미국 현지 기준.
+- 미결정: 자막 자동 끄기(문서에 없는 플레이어 명령 일부 사용)가 정책상 애매 — 뺄지 사용자 결정 대기.
+- 비용: 쓴 만큼 카드 결제되는 서비스(Cloudflare Workers 등)는 쓰지 않는다. 지금 구성은 전부 무료 한도 초과 시 멈추는 구조.
+- 애드센스: 2026-11-09 제출, 결과 메일 대기(최대 4주, 12/7경). 승인 가능성은 첫 시도 30% 안팎으로 추정.
+- 방문(GA4, 11/10~16): 활성 사용자 32명(대부분 미국 데이터센터 봇 추정), 한국 6명, 구글 검색 유입 14세션.
+- 사용자는 긴 글이 가득한 페이지를 싫어함 → 콘텐츠 보강은 짧게, 디자인을 해치지 않게.
 
 ## 남은 일
 1. 애드센스 승인 후: 좌·우·하단 광고 단위와 인피드 광고 단위를 사용자가 만들고 ID를 주면 켠다
