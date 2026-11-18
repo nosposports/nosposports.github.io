@@ -117,7 +117,7 @@ export const SPORTS: Sport[] = [
     name: '농구',
     leagues: [
       { id: 'kbl', name: 'KBL', live: true, teams: KBL, note: '일부 경기만 제공' },
-      { id: 'nba', name: 'NBA', live: true, teams: NBA, note: 'NBA가 외부 재생을 허용한 경기만 (많지 않아요)' },
+      { id: 'nba', name: 'NBA', live: false, teams: NBA, note: '한국에서 재생되는 공식 하이라이트를 찾는 중' },
     ],
   },
   {

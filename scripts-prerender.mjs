@@ -5,7 +5,8 @@ import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
-const DIST = new URL('./dist-web/', import.meta.url).pathname;
+import { fileURLToPath } from 'node:url';
+const DIST = fileURLToPath(new URL('./dist-web/', import.meta.url)); // 윈도우에서도 맞는 경로
 const ROUTES = ['', 'lck', 'kbo', 'kbl', 'kleague', 'epl', 'laliga', 'nba', 'leagues', 'teams', 'guide', 'faq', 'about', 'contact', 'privacy'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.txt': 'text/plain', '.xml': 'application/xml' };
 const shell = await readFile(join(DIST, 'index.html'), 'utf8');

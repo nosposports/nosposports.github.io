@@ -26,7 +26,8 @@ let cache: { at: number; p: Promise<Match[]> } | null = null;
 async function load(): Promise<Match[]> {
   const res = await fetch(`${DATA_URL}?t=${Math.floor(Date.now() / 300000)}`, { cache: 'no-store' });
   if (!res.ok) throw new Error(`matches ${res.status}`);
-  return ((await res.json()) as unknown[]).map(sanitize);
+  // 준비 중인 리그(예: NBA) 경기는 데이터에 있어도 어디에도 보여주지 않는다
+  return ((await res.json()) as unknown[]).map(sanitize).filter((m) => leagueById(m.leagueId ?? 'lol')?.live);
 }
 
 /**

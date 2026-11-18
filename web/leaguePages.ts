@@ -45,7 +45,7 @@ export const LEAGUE_PAGES: Record<string, { leagueId: string; name: string; titl
   nba: {
     leagueId: 'nba', name: 'NBA',
     title: 'NBA 하이라이트 스포 없이 보기 · 노스포스포츠',
-    desc: 'NBA 공식 풀게임 하이라이트를 점수 없이 보세요. NBA가 외부 재생을 허용한 경기만 나와요.',
+    desc: 'NBA 하이라이트는 준비 중이에요. 한국에서 재생되는 공식 하이라이트를 찾고 있어요.',
     h1: 'NBA 하이라이트, 결과 모르고 보기',
     keywords: ['NBA 하이라이트', 'NBA 풀게임 하이라이트 스포 없이'],
   },
