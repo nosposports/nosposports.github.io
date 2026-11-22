@@ -43,6 +43,7 @@
 
 ## 작업 환경과 올리는 방법
 ### Claude Code(사용자 PC)에서 작업할 때 — 권장
+- 사용자 맥: Node는 `~/.local/node/bin`, GitHub CLI는 `~/.local/bin/gh`(로그인됨, workflow 권한 포함). 셸 PATH에는 없으니 명령 앞에 `PATH=$HOME/.local/node/bin:$PATH`.
 - 두 저장소를 클론해서 작업하고 **git push로 올린다** (브라우저 업로드 불필요).
   `git clone https://github.com/nosposports/nosposports.github.io` / `git clone https://github.com/changyongone-star/nospo-data`
 - push 전: `npm ci` 후 `npm run build`가 끝까지 통과해야 한다 (빌드+프리렌더, playwright chromium 필요: `npx playwright install chromium`).
@@ -97,7 +98,7 @@
    → 인피드는 `drafts/feed-ad/README.md` 참고.
 2. ~~경기별 페이지~~ — 2026-11-22 공개. 주소 `/<리그>/<팀A>-vs-<팀B>-<MMDD>` (예: `/lck/gen-vs-blg-1115`, 한글 팀은 `/epl/뉴캐슬-vs-아스날-1122`).
    - 코드: `web/pages/MatchPage.tsx`, `web/matchPages.ts`(주소 규칙·단계 설명·팀 소개 글 `TEAM_INFO`). 프리렌더 주소 규칙은 `scripts-prerender.mjs`에 같은 규칙으로 복제돼 있음 — 바꾸면 둘 다.
-   - 빌드 때 matches.json을 받아 경기 페이지를 프리렌더하고 sitemap에 넣는다. 새 경기 페이지는 다음 배포 때 생긴다. 매일 자동 재빌드(deploy.yml에 schedule 추가)는 push에 GitHub `workflow` 권한이 필요해 보류 — `gh auth refresh -s workflow` 후 올리기.
+   - 빌드 때 matches.json을 받아 경기 페이지를 프리렌더하고 sitemap에 넣는다. `deploy-site`가 매일 05:00 KST에 다시 돌아 새 경기 페이지를 만든다.
    - 관련 경기 목록은 **이 경기보다 먼저 열린 경기만** (나중 경기가 보이면 누가 올라갔는지 드러남).
    - 팀 소개가 없는 팀(새 팀·이름 표기가 다른 팀)은 `TEAM_INFO`에 추가.
    - 미해결: 오른쪽 '방금 올라온 하이라이트'가 모든 페이지에 떠서, 예전 경기 페이지에서도 이후 경기(예: 결승 진출 팀)가 보임 — 사용자 결정 대기.
