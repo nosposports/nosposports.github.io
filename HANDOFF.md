@@ -25,7 +25,7 @@
   `pages/`(리그 안내·팀 소개·가이드·FAQ·소개·문의·개인정보), `AdSlot.tsx`·`adsense.ts`(광고), `public/`(CNAME, ads.txt, robots, 아이콘, manifest, sw.js)
 - `src/` 앱 본체: `App.tsx`(화면 전환, `?r=` 라운드 보기, `__recent2` = 모든 리그 최근 이틀), `screens/Onboarding.tsx`(첫 화면: 종목→리그→팀),
   `screens/MatchList.tsx`(목록·날짜·달력), `data/catalog.ts`(종목·리그·팀, `live` 여부), `lib/api.ts`(데이터 읽기)
-- 라이브 리그: LCK·월즈(lol), KBO, KBL, K리그1, 프리미어리그, 라리가. 배구는 채널 못 찾아 '준비 중'. NBA는 2026-11-18 '준비 중'으로 내림(수집은 계속, `catalog.ts`의 live만 끔 — 준비 중 리그 경기는 `api.ts`에서 걸러냄).
+- 라이브 리그: LCK·월즈(lol), KBO, KBL, K리그1, 프리미어리그, 라리가. 배구는 채널 못 찾아 '준비 중'. (2026-11-22 재조사: 이번 시즌 KBSN·SBS Sports 유튜브에 경기별 하이라이트 없음, KOVO(`UC-QIqPAffXGJVgy_tnn145w`)는 쇼츠와 여러 경기를 묶은 일일 매거진 '스페셜V'뿐, 구단 채널은 우리카드만 경기별 [H/L]을 올리고 제목에 결과가 들어감 → 여전히 불가) NBA는 2026-11-18 '준비 중'으로 내림(수집은 계속, `catalog.ts`의 live만 끔 — 준비 중 리그 경기는 `api.ts`에서 걸러냄).
 
 ## 데이터 수집 (nospo-data)
 - 채널: LCK, TVING(KBO·KBL), 쿠팡플레이 스포츠(프리미어리그·K리그1·라리가), NBA(풀게임 하이라이트만)
