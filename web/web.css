@@ -290,3 +290,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid #3182f6; outline-offs
 .hero-recent b { font-size: 15px; }
 .hero-recent:hover { background: rgba(255,255,255,.26); }
 .hero-recent-go { margin-left: 4px; padding: 2px 8px; border-radius: 999px; background: #fff; color: #1b64da; font-size: 12px; font-weight: 800; }
+
+/* 경기별 페이지 */
+.crumb { font-size: 13px; color: #8b95a1; margin: 0 0 10px; }
+.crumb a { color: #4e5968; text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.mp-hero { margin-bottom: 12px; }
+.mp-hero h1 { font-size: 26px; }
+.mp-chips { position: relative; display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.mp-chips span { background: rgba(255,255,255,.18); border-radius: 10px; padding: 5px 10px; font-size: 13px; font-weight: 700; }
+.mp-watch .page { padding: 0; }
+.mp-teams { list-style: none; padding: 0 !important; display: grid; gap: 12px !important; }
+.mp-teams li { display: flex; gap: 12px; align-items: flex-start; }
+.mp-teams b { font-size: 16px; color: #191f28; }
+.mp-teams p { margin: 2px 0 0 !important; font-size: 14px !important; color: #4e5968 !important; }
+.mp-h2-gap { margin-top: 18px !important; }
+.mp-link { width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-radius: 10px; text-decoration: none; }
+.mp-link:hover { background: #f9fafb; }

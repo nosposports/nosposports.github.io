@@ -14,6 +14,7 @@ import { Contact } from './pages/Contact';
 import { Privacy } from './pages/Privacy';
 import { LeaguePage } from './pages/LeaguePage';
 import { LEAGUE_PAGES } from './leaguePages';
+import { MatchPage } from './pages/MatchPage';
 
 const NAV = [
   { path: '/', label: '하이라이트' },
@@ -67,7 +68,7 @@ export function Shell() {
   });
   useEffect(() => onRoute(() => setRoute(currentPath())), []);
   useEffect(() => {
-    setMeta(route);
+    if (!route.includes('/')) setMeta(route); // 경기별 페이지는 MatchPage가 직접 설정
     if (route) window.scrollTo(0, 0);
   }, [route]);
 
@@ -79,7 +80,8 @@ export function Shell() {
     route === 'about' ? <About /> :
     route === 'contact' ? <Contact /> :
     route === 'privacy' ? <Privacy /> :
-    LEAGUE_PAGES[route] ? <LeaguePage key={route} slug={route} /> : <App />;
+    LEAGUE_PAGES[route] ? <LeaguePage key={route} slug={route} /> :
+    LEAGUE_PAGES[route.split('/')[0]] && route.includes('/') ? <MatchPage key={route} route={route} /> : <App />;
 
   return (
     <div className="site">

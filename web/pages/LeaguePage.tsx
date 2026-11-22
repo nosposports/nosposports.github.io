@@ -8,6 +8,7 @@ import { LEAGUE_PAGES } from '../leaguePages';
 import { INFO } from './Leagues';
 import { Link } from '../Link';
 import { navigate } from '../nav';
+import { matchPath, teamName } from '../matchPages';
 
 const fmt = (d: string) => `${Number(d.slice(5, 7))}월 ${Number(d.slice(8))}일`;
 
@@ -49,21 +50,25 @@ export function LeaguePage({ slug }: { slug: string }) {
           <ul className="lp-recent">
             {recent.map((m) => (
               <li key={m.matchId}>
-                <button onClick={go}>
+                <Link to={matchPath(m)} className="mp-link">
                   <span className="pair">
                     <TeamMark teamId={m.teamA} size={30} />
                     <TeamMark teamId={m.teamB} size={30} />
                   </span>
                   <span className="lp-tx">
-                    <b>{m.league}</b>
-                    <small>{fmt(m.date)}</small>
+                    <b>
+                      {teamName(m.teamA)} vs {teamName(m.teamB)}
+                    </b>
+                    <small>
+                      {fmt(m.date)} · {m.league}
+                    </small>
                   </span>
                   <span className="go">›</span>
-                </button>
+                </Link>
               </li>
             ))}
           </ul>
-          <p className="hint small">결과·점수는 표시하지 않아요. 누르면 하이라이트 목록으로 가요.</p>
+          <p className="hint small">결과·점수는 표시하지 않아요. 누르면 그 경기 페이지에서 바로 볼 수 있어요.</p>
         </section>
       )}
 

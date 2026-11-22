@@ -16,6 +16,8 @@ interface Props {
   onBack: () => void;
   onSetWatched: (matchId: string, setNo: number, matchDone: boolean) => void;
   onPosition: (key: string, seconds: number) => void;
+  /** 경기별 페이지처럼 바깥에 제목이 이미 있을 때 */
+  hideTitle?: boolean;
 }
 
 type View =
@@ -65,9 +67,11 @@ export function MatchDetail(props: Props) {
 
   return (
     <div className="page">
-      <h1 className="title small">
-        [{match.date.slice(5).replace('-', '.')}] {a} vs {b} 하이라이트
-      </h1>
+      {!props.hideTitle && (
+        <h1 className="title small">
+          [{match.date.slice(5).replace('-', '.')}] {a} vs {b} 하이라이트
+        </h1>
+      )}
 
       {view.kind === 'playing' && videoOf(setNo) ? (
         <SpoilerFreePlayer
